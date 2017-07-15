@@ -1,0 +1,17 @@
+#!/usr/bin/osascript
+
+on run arglist
+tell application "Things3"
+if count of arglist is not 0 then
+ set thename to item 1 of arglist
+ if count of arglist is greater than 1
+  set thenote to item 2 of arglist
+  make new to do at list "Inbox" with properties {name:thename, notes:thenote}
+ else
+  make new to do at list "Inbox" with properties {name:thename}
+ end if
+else
+ return "Nothing added."
+end if
+end tell
+end run

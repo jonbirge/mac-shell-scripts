@@ -1,0 +1,20 @@
+#!/usr/bin/osascript
+
+tell application "Mail"
+set unreadcount to inbox's unread count
+if unreadcount is greater than 0 then
+   set output to ""
+   set thecount to 0
+   set themessagelist to every message of inbox whose read status is false
+   repeat with eachmessage in themessagelist
+	set thecount to thecount + 1
+	set output to output & thecount & ") " & (extract name from eachmessage's sender) & ": " & tab & eachmessage's subject
+	if thecount is less than unreadcount then
+	   set output to output & linefeed
+	end if
+   end repeat
+   return output
+else
+   return "You have no unread messages."
+end if
+end tell

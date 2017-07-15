@@ -1,0 +1,55 @@
+#!/usr/bin/osascript
+
+on run arglist
+	tell application "Mail"
+		set msgcount to count of inbox
+		if msgcount is greater than 0 then
+			set msglist to every message in inbox whose read status is false
+			set numlist to my argsnumbers(arglist)
+			repeat with num in numlist
+			       set read status of item num in msglist to true
+			end repeat
+			return "Marked " & (count of numlist) & " message(s) as read."
+		else
+			return "You have no unread messages."
+		end if
+	end tell
+end run
+
+on argsnumbers(arglist)
+	set numlist to {}
+	repeat with eacharg in arglist
+		set argstr to eacharg as string
+		set dashchar to my hasdash(argstr)
+		if dashchar is not 0 then
+			set firstnum to my getfirstnum(argstr, dashchar)
+			set lastnum to my getsecondnum(argstr, dashchar)
+			repeat with newnum from firstnum to lastnum
+				set numlist to numlist & newnum
+			end repeat
+		else
+			set numlist to numlist & (argstr as integer)
+		end if
+	end repeat
+	return numlist
+end argsnumbers
+
+on hasdash(thestring)
+	set numchar to (count of characters) in thestring
+	repeat with whichchar from 1 to numchar
+		set thechar to character whichchar of thestring
+		if thechar is "-" then
+			return whichchar
+		end if
+	end repeat
+	return 0
+end hasdash
+
+on getfirstnum(thestring, dashchar)
+	return (characters 1 thru (dashchar - 1) of thestring) as text as integer
+end getfirstnum
+
+on getsecondnum(thestring, dashchar)
+	set numchar to count of characters in thestring
+	return (characters (dashchar + 1) thru numchar of thestring) as text as integer
+end getsecondnum

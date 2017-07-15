@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ $# -lt 1 ]; then return 1;fi
+if [ $# -gt 1 ]; then
+    duedate=`php -r "date_default_timezone_set('America/Chicago');echo date('m/d/y',strtotime('$2'));"`
+    duedate=",due date:date \"$duedate\""
+fi
+osascript -e "tell application \"Things\"" \
+    -e "make new to do at list \"Inbox\" with properties {name:\"$1\",notes:\"$3\"$duedate}" \
+    -e "end tell"
+
+

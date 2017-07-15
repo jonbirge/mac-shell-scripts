@@ -1,0 +1,39 @@
+#!/usr/bin/osascript
+
+tell application "Things3"
+	set inboxlist to first list whose name is "Inbox"
+	set todaylist to first list whose name is "Today"
+	if count of every to do in inboxlist is 0 and count of every to do in todaylist is 0 then
+	set output to "There are no items to do."
+	else
+        set output to ""
+	if count of every to do in inboxlist is not 0
+	set output to output & "INBOX:" & linefeed
+	set output to output & my dispthings(inboxlist)
+	set output to output & linefeed & linefeed
+	end if
+ 	set output to output & "TODAY:" & linefeed
+	set output to output & my dispthings(todaylist)
+	end if
+	return output
+end tell
+
+on dispthings(thelist)
+	tell application "Things3"
+		set output to ""
+		set itemlist to every to do in thelist
+		if (count of itemlist) is 0 then
+			return "[x]"
+		else
+			set num to 0 as integer
+			repeat with theitem in itemlist
+				set num to (num + 1)
+				set output to output & num as text & ") " & theitem's name
+				if num is less than count of itemlist
+				set output to output & linefeed
+				end if
+			end repeat
+			return output
+		end if
+	end tell
+end dispthings

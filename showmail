@@ -1,0 +1,20 @@
+#!/usr/bin/osascript
+
+tell application "Mail"
+set msglist to every message of inbox
+set msgcount to count of msglist
+if msgcount is greater than 0 then
+   set output to ""
+   set thecount to 0
+   repeat with eachmessage in every message of inbox
+	set thecount to thecount + 1
+	set output to output & thecount & ") " & (extract name from eachmessage's sender) & ": " & tab & eachmessage's subject
+	if thecount is less than msgcount then
+	   set output to output & linefeed
+	end if
+   end repeat
+   return output
+else
+   return "You have no messages."
+end if
+end tell

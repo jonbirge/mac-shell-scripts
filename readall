@@ -1,0 +1,17 @@
+#!/usr/bin/osascript
+
+on run arglist
+	tell application "Mail"
+		set msgcount to count of inbox
+		if msgcount is greater than 0 then
+			set msglist to every message in inbox whose read status is false
+			repeat with themsg in msglist
+			       set read status of themsg to true
+			end repeat
+			return "Marked " & (count of msglist) & " message(s) as read."
+		else
+			return "You have no unread messages."
+		end if
+	end tell
+end run
+
