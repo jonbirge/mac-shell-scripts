@@ -7,3 +7,4 @@ computer remotely and quickly do a few things, such as check mail or look at the
 - readall: mark all mail read
 - things: show inbox and today from Things
 - thing: add an item to inbox in Things
+- today: show things items and all items in calendar for today (rather slow)
