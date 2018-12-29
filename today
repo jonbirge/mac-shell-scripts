@@ -1,0 +1,64 @@
+#!/usr/bin/osascript
+set calcount to 3
+
+set output to ""
+tell application "Things3"
+  set inboxlist to first list whose name is "Inbox"
+  set todaylist to first list whose name is "Today"
+  if (count of every to do in inboxlist) is 0 and (count of every to do in todaylist) is 0 then
+    set output to my addout("There are no items to do.", output)
+  else
+    if (count of every to do in inboxlist) is not 0 then
+    set output to output & my dispthings(inboxlist)
+    set output to output & linefeed & linefeed
+    end if
+    set output to my addout("Things...", output)
+    set output to my addout(my dispthings(todaylist), output)
+  end if
+end tell
+
+tell application "Calendar"
+  set allcals to calendars
+  set thecals to items 1 thru 3 of allcals
+  set theStartDate to current date
+  set hours of theStartDate to 0
+  set minutes of theStartDate to 0
+  set seconds of theStartDate to 0
+  set theEndDate to theStartDate + (1 * days) - 1
+  set output to my addout(linefeed & "Calendars...", output)
+  repeat with thecal in thecals
+    set num to 1
+    tell thecal
+      set allevents to (every event where start date is greater than or equal to theStartDate and start date is less than or equal to theEndDate)
+    end tell
+    if allevents is not {} then
+    set output to my addout(name of thecal & ":", output)
+    repeat with eachevent in allevents
+      set output to my addout((num as string) & ") " & (summary of eachevent), output)
+      set num to num + 1
+    end repeat
+    end if
+  end repeat
+end tell
+
+return output
+
+on addout(textline, outputin)
+   return outputin & textline & linefeed
+end addout
+
+on dispthings(thelist)
+  tell application "Things3"
+  set output to ""
+  set itemlist to every to do in thelist
+  set num to 0 as integer
+  repeat with theitem in itemlist
+  set num to (num + 1)
+  set output to (output & num as text) & ") " & (name of theitem)
+  if num is less than (count of itemlist) then
+  set output to output & linefeed
+  end if
+  end repeat
+  return output
+  end tell
+end dispthings
